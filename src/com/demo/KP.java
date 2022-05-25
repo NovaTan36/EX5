@@ -81,4 +81,45 @@ public class KP {
             if (h[i]==1) System.out.print(i+",");
         }
     }
+
+    public void run_below()
+    {
+        end =new int[total+1][w+1];
+        for (int i = 1; i < total+1; i++)
+        {
+            for (int j = 1; j < w+1; j++)
+            {
+                end[i][j]=-1;
+            }
+        }
+        run_b_loop(total,w);
+
+    }
+
+    private int run_b_loop(int t,int w)
+    {
+        int tt=thing[t][0];
+        if (w-tt<0&&t>1&&w>1)
+        {
+            if(end[t-1][w]==-1)run_b_loop(t-1,w);
+            else
+            {
+                end[t][w]=end[t-1][w];
+                //return end[t][w];
+            }
+        }
+        else if(t>1&&w>1)
+        {
+            int y=end[t-1][w-tt]==-1?run_b_loop(t-1,w-tt):end[t-1][w];
+            int x=end[t-1][w]==-1?run_b_loop(t-1,w):end[t-1][w];
+
+            end[t][w]=Math.max(x,w-thing[t][0]>=0?y+thing[t][1]:-1);
+
+        }
+        else
+        {
+            end[t][w]=w-tt>=0?Math.max(end[t-1][w],end[t-1][w-tt]+thing[t][1]):(end[t-1][w]==-1)?run_b_loop(t-1,w):end[t-1][w];
+        }
+        return end[t][w];
+    }
 }
